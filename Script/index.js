@@ -11,23 +11,34 @@ const loadAllPetsData = () => {
         .catch(error => console.log(error))
 }
 
-// {
-//     "petId": 1,
-//     "breed": "Golden Retriever",
-//     "category": "Dog",
-//     "date_of_birth": "2023-01-15",
-//     "price": 1200,
-//     "image": "https://i.ibb.co.com/p0w744T/pet-1.jpg",
-//     "gender": "Male",
-//     "pet_details": "This friendly male Golden Retriever is energetic and loyal, making him a perfect companion for families. Born on January 15, 2023, he enjoys playing outdoors and is especially great with children. Fully vaccinated, he's ready to join your family and bring endless joy. Priced at $1200, he offers love, loyalty, and a lively spirit for those seeking a playful yet gentle dog.",
-//     "vaccinated_status": "Fully",
-//     "pet_name": "Sunny"
-// }
-
+const loadCategoryPet = (id) => { 
+    fetch(`https://openapi.programming-hero.com/api/peddy/category/${id}`)
+.then(res => res.json())
+.then(data => displayAllPetsData(data.data))
+.catch(error => console.log(error))             
+};
 
 
 const displayAllPetsData = (pets) => {
     const petsAllData = document.getElementById('All-Pets')
+    if(pets.length == 0 ){
+        petsAllData.classList.remove('grid')
+        petsAllData.innerHTML=`
+             <div class="h-[400px] w-[780px]  bd flex flex-col gap-5 justify-center items-center">
+                <img src="images/error.webp" alt="">
+                <h1 class="">No Information Available</h1>
+                <p class="">It is a long established fact that a reader will be distracted by the readable content of a page when looking at 
+                its layout. The point of using Lorem Ipsum is that it has a.</p>
+            </div>
+        `
+        
+        return
+    }else{
+        petsAllData.classList.add('grid')
+
+    }
+
+    petsAllData.innerHTML=""
     pets.forEach(pet => {
         console.log(pet);
         const card = document.createElement('div')
@@ -77,26 +88,36 @@ const displayAllPetsData = (pets) => {
     });
 }
 
-
-
-
 const displayShow = (categories) => {
     const categoryContainer = document.getElementById('categories'); 
     categories.forEach(item => {
-        const buttonConteiner = document.createElement('div');
-        buttonConteiner.innerHTML=`
-        <button class='btn'>
+        const buttonContainer = document.createElement('div');
+        buttonContainer.innerHTML = `
+        <button onclick="loadCategoryPet('${item.category}')" class='btn'>
+        ${item.category}
         </button>
-        `
-        // button.classList.add('btn', 'button-border', 'px-8'); 
-        // const img = document.createElement('img');
-        // img.classList.add('w-[30px]')
-        // img.src = item.category_icon; 
-        // button.innerText = item.category;
-        // button.appendChild(img);
-        // categoryContainer.appendChild(button);
+        `;
+       
+        categoryContainer.appendChild(buttonContainer);
     });
 };
+
+
+
+
+// const displayShow = (categories) => {
+//     const categoryContainer = document.getElementById('categories'); 
+//     categories.forEach(item => {
+//         const buttonConteiner = document.createElement('div');
+//         buttonConteiner.innerHTML=`
+//         <button onclick="loadCategoryPet(${item.category})" class='btn'>
+//         ${item.category}
+//         </button>
+//         `
+       
+//         categoryContainer.appendChild(buttonConteiner);
+//     });
+// };
 
 
 
@@ -107,7 +128,12 @@ loadAllPetsData()
 
 
 
-
+ // button.classList.add('btn', 'button-border', 'px-8'); 
+        // const img = document.createElement('img');
+        // img.classList.add('w-[30px]')
+        // img.src = item.category_icon; 
+        // button.innerText = item.category;
+        // button.appendChild(img);
 
 
 
