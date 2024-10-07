@@ -24,3 +24,8 @@
   display: flex;
   align-items: center;
 }
+
+.hoverpets-btn{
+  background-color: red;
+  color: black;
+}

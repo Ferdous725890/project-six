@@ -11,12 +11,26 @@ const loadAllPetsData = () => {
         .catch(error => console.log(error))
 }
 
+const removeClass =()=>{
+    const buttons = document.getElementsByClassName('category-btn')
+    for(btnButton of buttons){
+        btnButton.classList.remove('hoverpets-btn')
+    }
+    
+ }
+
 const loadCategoryPet = (id) => { 
     fetch(`https://openapi.programming-hero.com/api/peddy/category/${id}`)
 .then(res => res.json())
-.then(data => displayAllPetsData(data.data))
+.then(data => {
+    removeClass()
+    const HoverBtn = document.getElementById(`btn-${id}`)
+    HoverBtn.classList.add('hoverpets-btn')
+    displayAllPetsData(data.data)
+})
 .catch(error => console.log(error))             
 };
+
 
 
 const displayAllPetsData = (pets) => {
@@ -31,13 +45,10 @@ const displayAllPetsData = (pets) => {
                 its layout. The point of using Lorem Ipsum is that it has a.</p>
             </div>
         `
-        
         return
     }else{
         petsAllData.classList.add('grid')
-
     }
-
     petsAllData.innerHTML=""
     pets.forEach(pet => {
         console.log(pet);
@@ -93,7 +104,8 @@ const displayShow = (categories) => {
     categories.forEach(item => {
         const buttonContainer = document.createElement('div');
         buttonContainer.innerHTML = `
-        <button onclick="loadCategoryPet('${item.category}')" class='btn'>
+
+        <button id="btn-${item.category}" onclick="loadCategoryPet('${item.category}')" class='btn category-btn'>
         ${item.category}
         </button>
         `;
