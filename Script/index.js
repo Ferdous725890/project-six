@@ -31,6 +31,26 @@ const loadCategoryPet = (id) => {
 .catch(error => console.log(error))             
 };
 
+const loadDetails = (petId) =>{
+    fetch('https://openapi.programming-hero.com/api/peddy/pet/5')
+    .then(res => res.json())
+    .then(data => desplayDetails(data.petData))
+    .catch(error => console(error))
+}
+const desplayDetails = (petData) =>{
+console.log(petData);
+const detailsConteiner = document.getElementById('modal-content')
+detailsConteiner.innerHTML=`
+<img src=${petData.image}/>
+<p>${petData.breed}</p>
+<p>${petData.date_of_birth}</p>
+<p>${petData.price}</p>
+<p>${petData.gender}</p>
+<p>${petData.pet_details}</p>
+`
+
+document.getElementById('my_modal_5').showModal();
+}
 
 
 const displayAllPetsData = (pets) => {
@@ -89,7 +109,7 @@ const displayAllPetsData = (pets) => {
                             <img src="/images/like.png" alt="Like button" />
                         </button>
                         <button class="btn">Adopt</button>
-                        <button class="btn">Details</button>
+                        <button onclick="loadDetails(${pet.petId})" class="btn">Details</button>
                     </div>
                 </div>
             </div>
